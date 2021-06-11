@@ -1,28 +1,41 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { config } from './config'
 import { vh, vw, vmin, vmax, randomizeCells, getNextGen } from './helpers'
 import { doublediagonal } from './patterns'
+import Toolbar from './toolbar'
 
 export default function Main(props) {
 
-    const [canvas, setCanvas] = useState(null);
+    const [canvas, setCanvas] = useState(config);
     const [eventId, setEventId] = useState(null);
 //after component mounts
     useEffect(() => {
         //fetch device screen dimensions, and calculate how many cells are needed
-        initializeCanvas();
+        initializeCanvas()
     }, []);
 
+//after updating simulation properties
     useEffect(() => {
-        //startSimulation();
-    }, [canvas ? canvas.rowCount : null])
+        if(canvas.shouldRedraw) {
+            initializeCanvas()
+        }
+        else {
+            startSimulation()
+        }
+    }, [
+        canvas.transitionSpeed,
+        canvas.epochDuration,
+        canvas.shouldRedraw,
+        canvas.cellDimensions
+    ])
 
     const initializeCanvas = () => {
         const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
         const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-        const rowCount = Math.floor((windowHeight-config.extraSpace)/config.cellDimensions)
-        const columnCount = Math.floor((windowWidth-100)/config.cellDimensions)
-        console.log(windowHeight, rowCount, windowWidth, columnCount);
+        const rowCount = Math.floor((windowHeight-config.extraSpace)/canvas.cellDimensions)
+        const columnCount = Math.floor((windowWidth-100)/canvas.cellDimensions)
+        console.log(`zzz`, canvas.cellDimensions, windowHeight, rowCount, windowWidth, columnCount);
         //initialize Array
         //let arr = randomizeCells({rowCount, columnCount})
         //let arr = new Array(rowCount).fill(new Array(columnCount).fill(0))
@@ -37,7 +50,7 @@ export default function Main(props) {
             clearInterval(eventId)
         }
         setCanvas({
-            ...config,
+            ...canvas,
             rowCount,
             columnCount,
             dataArray: arr,
@@ -45,8 +58,8 @@ export default function Main(props) {
     }
 
     const startSimulation = () => {
-        if(canvas) {
-            const newEventId = setInterval(() => nextGen(canvas.dataArray), config.epochDuration)
+        if(canvas && canvas.dataArray) {
+            const newEventId = setInterval(() => nextGen(canvas.dataArray), canvas.epochDuration)
             setEventId(newEventId)
             //nextGen(arr)
         }
@@ -54,7 +67,8 @@ export default function Main(props) {
 
     const stopSimulation = () => {
         if(eventId) {
-            clearInterval(eventId);
+            clearInterval(eventId)
+            setEventId(null)
         }
     }
 
@@ -69,16 +83,49 @@ export default function Main(props) {
         )
     }
 
+    const updateCanvas = (type, value) => {
+        stopSimulation()
+        switch(type) {
+            case 'speed': {
+                setCanvas({ ...canvas, shouldRedraw: false, epochDuration: parseInt(value) })
+                break
+            }
+            case 'transitionSpeed': {
+                setCanvas({ ...canvas, shouldRedraw: false, transitionSpeed: parseInt(value) })
+                break
+            }
+            case 'size': {
+                setCanvas({ ...canvas, shouldRedraw: true, cellDimensions: parseInt(value) })
+            }
+            default: break
+        }
+        //startSimulation()
+    }
+
+    const randomizePattern = () => {
+        stopSimulation()
+        setCanvas({ ...canvas, shouldRedraw: true })
+    }
+
+    // console.log(`zzz `, canvas)
+
     const { dataArray, cellDimensions, extraSpace, transitionSpeed } = canvas;
 
     return (
         <div className="main">
             <h1 className="">Game of life</h1>
-            <button onClick={initializeCanvas}>randomize</button>
-            <button onClick={startSimulation}>start</button>
-            <button onClick={stopSimulation}>stop</button>
+            <Toolbar {...canvas} updateCanvas={updateCanvas} />
+            <button onClick={randomizePattern}>randomize</button>
             {
-                canvas &&
+                !eventId &&
+                <button onClick={startSimulation}>start</button>
+            }
+            {
+                eventId &&
+                <button onClick={stopSimulation}>stop</button>
+            }
+            {
+                dataArray &&
                 <div className="canvas" style={{ width: `calc(100% - ${extraSpace}px`}}>
                 {
                     dataArray.map((row, key) => {
