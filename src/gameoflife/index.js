@@ -6,6 +6,7 @@ import { doublediagonal } from './patterns'
 import Toolbar from './toolbar'
 
 import AlienIcon from './alien.svg'
+import PumpkinIcon from './pumpkin.svg'
 
 export default function Main(props) {
 
@@ -161,7 +162,7 @@ export default function Main(props) {
                                             >
                                                 {
                                                 // custom icons
-                                                <img src={AlienIcon}
+                                                <img src={PumpkinIcon}
                                                     className="customCell"
                                                     alt="cell"
                                                 />
