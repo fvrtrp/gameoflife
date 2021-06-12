@@ -34,17 +34,21 @@ export default function Main(props) {
         const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
         const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
         const rowCount = Math.floor((windowHeight-config.extraSpace)/canvas.cellDimensions)
-        const columnCount = Math.floor((windowWidth-100)/canvas.cellDimensions)
+        const columnCount = Math.floor((windowWidth-1000)/canvas.cellDimensions)
         console.log(`zzz`, canvas.cellDimensions, windowHeight, rowCount, windowWidth, columnCount);
         //initialize Array
         //let arr = randomizeCells({rowCount, columnCount})
         //let arr = new Array(rowCount).fill(new Array(columnCount).fill(0))
         let arr = [];
+
+        //random pattern
+        arr = randomizeCells(rowCount, columnCount)
+
         //vertical line
         //arr[1][1] = 1;
 
         //double diagonal
-        arr = doublediagonal(rowCount, columnCount)
+        //arr = doublediagonal(rowCount, columnCount)
 
         if(eventId) {
             clearInterval(eventId)
@@ -140,7 +144,7 @@ export default function Main(props) {
                                                 style={{
                                                     width: `${cellDimensions}px`,
                                                     height: `${cellDimensions}px`,
-                                                    transition: `background-color ${transitionSpeed}s ease-in`,
+                                                    transition: `opacity ${transitionSpeed}s ease-in-out`,
                                                 }}
                                             >
                                                 

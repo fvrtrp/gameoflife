@@ -16,13 +16,19 @@ export function vmax(v) {
     return Math.max(vh(v), vw(v));
 }
 
-export const randomizeCells = (props) => {
-    const { rowCount, columnCount } = props;
+export const randomizeCells = (rowCount, columnCount) => {
     const newData = [];
     for(let i=0; i< rowCount; i++) {
         const row = [];
         for(let j=0; j<columnCount; j++) {
-            row.push(Math.floor(Math.random()*2));
+            //actual random
+            //const rand = Math.floor(Math.random()*2)
+
+            //skewed to make more empty than full
+            const vals = [0,0,0,0,0,0,0,0,0,0,0,0,1]
+            const rand = vals[Math.floor(Math.random()*vals.length)]
+
+            row.push(rand)
         }
         newData.push(row);
     }
@@ -30,39 +36,49 @@ export const randomizeCells = (props) => {
 }
 
 export const getNextGen = (pixels) => {
-    let newPixels = pixels, upperX = pixels[0].length, upperY = pixels.length;
+    let newPixels = [], upperX = pixels[0].length, upperY = pixels.length
 
     const prev = (index, type) => {
-        return index === 0 ? (type==='y' ? upperX : upperY) - 1 : index - 1;
+        return index === 0 ? (type==='y' ? upperX : upperY) - 1 : index - 1
     }
     const next = (index, type) => {
-        return index === (type==='y' ? upperX : upperY) - 1 ? 0 : index + 1;
+        return index === (type==='y' ? upperX : upperY) - 1 ? 0 : index + 1
     }
 
     for(let i=0; i<upperY; i++) {
+        newPixels[i] = []
         for(let j=0; j<upperX; j++) {
           let count=0;
         //   console.log(`zzz cell`, i, j, prev(i,'x'), prev(j,'y'));
-          if(pixels[prev(i, 'x')][prev(j, 'y')]===1)    count++;
-          if(pixels[prev(i, 'x')][j]===1)count++;
-          if(pixels[prev(i, 'x')][next(j, 'y')]===1)count++;
-          if(pixels[i][prev(j, 'y')]===1)count++;
-          if(pixels[i][next(j, 'y')]===1)count++;
-          if(pixels[next(i, 'x')][prev(j, 'y')]===1)count++;
-          if(pixels[next(i, 'x')][j]===1)count++;
-          if(pixels[next(i, 'x')][next(j, 'y')]===1)count++;
+          if(pixels[prev(i, 'x')][prev(j, 'y')]===1)    count++
+          if(pixels[prev(i, 'x')][j]===1)count++
+          if(pixels[prev(i, 'x')][next(j, 'y')]===1)count++
+          if(pixels[i][prev(j, 'y')]===1)count++
+          if(pixels[i][next(j, 'y')]===1)count++
+          if(pixels[next(i, 'x')][prev(j, 'y')]===1)count++
+          if(pixels[next(i, 'x')][j]===1)count++
+          if(pixels[next(i, 'x')][next(j, 'y')]===1)count++
 
-          if(pixels[i][j]===1) {
-              if(count<2 || count>3)
-                newPixels[i][j]=0;
-          }
-          else if(pixels[i][j]===0) {
-            if(count===3)
-              newPixels[i][j]=1;
-          }
-          count=0;
+          newPixels[i][j] = (pixels[i][j] === 1) ? ((count<2 || count>3) ? 0 : 1) :(count===3 ? 1 : 0)
+
+        //   if(pixels[i][j]===1) {
+        //       if(count<2 || count>3)
+        //         newPixels[i][j] = 0
+        //     else
+        //         newPixels[i][j] = 1
+        //   }
+        //   else if(pixels[i][j]===0) {
+        //     if(count===3)
+        //         newPixels[i][j] = 1
+        //     else
+        //         newPixels[i][j] = 0
+        //   }
+          count=0
         }
+        //console.log(`zzz row`, newRow)
+        //newPixels.push(newRow)
     }
-    return newPixels;
+    console.log(`zzz newpixels`, pixels, newPixels)
+    return newPixels
 }
 

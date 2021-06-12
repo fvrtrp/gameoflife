@@ -20,11 +20,12 @@ $dark-highlight: red;
       justify-content: center;
       flex-basis: 100%;
       .cell {
-        background-color: rgb(21, 21, 21);
-        border-radius: 50%;
+        background-color: #92FF07;
+        //border-radius: 50%;
         //transition: background-color 1s ease-in;
+        opacity: 0.1;
         &.active {
-          background-color: darkslategrey;
+          opacity: 1;
         }
       }
     }

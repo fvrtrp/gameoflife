@@ -25,7 +25,7 @@ export default function Toolbar(props) {
                 <input
                     type="range"
                     min={50}
-                    max={5000}
+                    max={2000}
                     step="25"
                     value={epochDuration}
                     className="slider"
@@ -37,7 +37,7 @@ export default function Toolbar(props) {
                 <input
                     type="range"
                     min={5}
-                    max={100}
+                    max={80}
                     step="5"
                     value={cellDimensions}
                     className="slider"
