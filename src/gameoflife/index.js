@@ -30,11 +30,20 @@ export default function Main(props) {
         canvas.cellDimensions
     ])
 
+//after dataarray is updated
+    useEffect(() => {
+        if(eventId) {
+            //console.log(`zzz udpated`)
+            startSimulation()
+        }
+    }, [canvas.dataArray])
+    
+
     const initializeCanvas = () => {
         const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
         const windowWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
         const rowCount = Math.floor((windowHeight-config.extraSpace)/canvas.cellDimensions)
-        const columnCount = Math.floor((windowWidth-1000)/canvas.cellDimensions)
+        const columnCount = Math.floor((windowWidth-100)/canvas.cellDimensions)
         console.log(`zzz`, canvas.cellDimensions, windowHeight, rowCount, windowWidth, columnCount);
         //initialize Array
         //let arr = randomizeCells({rowCount, columnCount})
@@ -51,7 +60,7 @@ export default function Main(props) {
         //arr = doublediagonal(rowCount, columnCount)
 
         if(eventId) {
-            clearInterval(eventId)
+            clearTimeout(eventId)
         }
         setCanvas({
             ...canvas,
@@ -63,7 +72,7 @@ export default function Main(props) {
 
     const startSimulation = () => {
         if(canvas && canvas.dataArray) {
-            const newEventId = setInterval(() => nextGen(canvas.dataArray), canvas.epochDuration)
+            const newEventId = setTimeout(() => nextGen(canvas.dataArray), canvas.epochDuration)
             setEventId(newEventId)
             //nextGen(arr)
         }
@@ -71,7 +80,7 @@ export default function Main(props) {
 
     const stopSimulation = () => {
         if(eventId) {
-            clearInterval(eventId)
+            clearTimeout(eventId)
             setEventId(null)
         }
     }
@@ -100,6 +109,7 @@ export default function Main(props) {
             }
             case 'size': {
                 setCanvas({ ...canvas, shouldRedraw: true, cellDimensions: parseInt(value) })
+                break
             }
             default: break
         }

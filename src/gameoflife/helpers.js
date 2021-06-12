@@ -25,7 +25,7 @@ export const randomizeCells = (rowCount, columnCount) => {
             //const rand = Math.floor(Math.random()*2)
 
             //skewed to make more empty than full
-            const vals = [0,0,0,0,0,0,0,0,0,0,0,0,1]
+            const vals = [0,0,0,0,0,0,0,1]
             const rand = vals[Math.floor(Math.random()*vals.length)]
 
             row.push(rand)
@@ -46,7 +46,7 @@ export const getNextGen = (pixels) => {
     }
 
     for(let i=0; i<upperY; i++) {
-        newPixels[i] = []
+        newPixels[i] = [...pixels[i]]
         for(let j=0; j<upperX; j++) {
           let count=0;
         //   console.log(`zzz cell`, i, j, prev(i,'x'), prev(j,'y'));
@@ -61,24 +61,9 @@ export const getNextGen = (pixels) => {
 
           newPixels[i][j] = (pixels[i][j] === 1) ? ((count<2 || count>3) ? 0 : 1) :(count===3 ? 1 : 0)
 
-        //   if(pixels[i][j]===1) {
-        //       if(count<2 || count>3)
-        //         newPixels[i][j] = 0
-        //     else
-        //         newPixels[i][j] = 1
-        //   }
-        //   else if(pixels[i][j]===0) {
-        //     if(count===3)
-        //         newPixels[i][j] = 1
-        //     else
-        //         newPixels[i][j] = 0
-        //   }
           count=0
         }
-        //console.log(`zzz row`, newRow)
-        //newPixels.push(newRow)
     }
-    console.log(`zzz newpixels`, pixels, newPixels)
     return newPixels
 }
 
