@@ -20,12 +20,17 @@ $dark-highlight: red;
       justify-content: center;
       flex-basis: 100%;
       .cell {
-        background-color: #92FF07;
+        //background-color: #92FF07;
         //border-radius: 50%;
         //transition: background-color 1s ease-in;
         opacity: 0.1;
         &.active {
           opacity: 1;
+        }
+        .customCell {
+          object-fit: contain;
+          width: 100%;
+          height: 100%;
         }
       }
     }

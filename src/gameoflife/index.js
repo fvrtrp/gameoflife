@@ -5,6 +5,8 @@ import { vh, vw, vmin, vmax, randomizeCells, getNextGen } from './helpers'
 import { doublediagonal } from './patterns'
 import Toolbar from './toolbar'
 
+import AlienIcon from './alien.svg'
+
 export default function Main(props) {
 
     const [canvas, setCanvas] = useState(config);
@@ -157,7 +159,13 @@ export default function Main(props) {
                                                     transition: `opacity ${transitionSpeed}s ease-in-out`,
                                                 }}
                                             >
-                                                
+                                                {
+                                                // custom icons
+                                                <img src={AlienIcon}
+                                                    className="customCell"
+                                                    alt="cell"
+                                                />
+                                                }
                                             </div>
                                         )
                                     })

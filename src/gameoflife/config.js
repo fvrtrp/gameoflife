@@ -1,6 +1,6 @@
 export const config = {
-    transitionSpeed : 1,
-    cellDimensions: 20,
+    transitionSpeed : 0.2,
+    cellDimensions: 40,
     extraSpace: 200,
-    epochDuration: 100,
+    epochDuration: 300,
 }
