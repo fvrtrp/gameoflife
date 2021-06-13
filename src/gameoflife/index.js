@@ -7,6 +7,7 @@ import Toolbar from './toolbar'
 
 import AlienIcon from './alien.svg'
 import PumpkinIcon from './pumpkin.svg'
+import CellIcon from './cell.svg'
 
 export default function Main(props) {
 
@@ -162,7 +163,7 @@ export default function Main(props) {
                                             >
                                                 {
                                                 // custom icons
-                                                <img src={PumpkinIcon}
+                                                <img src={CellIcon}
                                                     className="customCell"
                                                     alt="cell"
                                                 />
