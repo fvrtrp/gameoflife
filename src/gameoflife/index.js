@@ -4,10 +4,7 @@ import { config } from './config'
 import { vh, vw, vmin, vmax, randomizeCells, getNextGen } from './helpers'
 import { doublediagonal } from './patterns'
 import Toolbar from './toolbar'
-
-import AlienIcon from './alien.svg'
-import PumpkinIcon from './pumpkin.svg'
-import CellIcon from './cell.svg'
+import Cell from './cell'
 
 export default function Main(props) {
 
@@ -150,27 +147,9 @@ export default function Main(props) {
                         return (
                             <div className="row" key={key}>
                                 {
-                                    row.map((cell, key2) => {
-                                        return (
-                                            <div
-                                                key={key2}
-                                                className={`cell ${key} ${key2} ${cell ? 'active' : ''}`}
-                                                style={{
-                                                    width: `${cellDimensions}px`,
-                                                    height: `${cellDimensions}px`,
-                                                    transition: `opacity ${transitionSpeed}s ease-in-out`,
-                                                }}
-                                            >
-                                                {
-                                                // custom icons
-                                                <img src={CellIcon}
-                                                    className="customCell"
-                                                    alt="cell"
-                                                />
-                                                }
-                                            </div>
-                                        )
-                                    })
+                                    row.map((cell, key2) => (
+                                    <Cell key={key2} cell={cell} cellDimensions={cellDimensions} transitionSpeed={transitionSpeed} />
+                                    ))
                                 }
                             </div>
                         )
