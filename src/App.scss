@@ -20,10 +20,13 @@ $dark-highlight: red;
       justify-content: center;
       flex-basis: 100%;
       .cell {
-        //background-color: #92FF07;
-        //border-radius: 50%;
+        // background-color: #92FF07;
+        border-radius: 50%;
         //transition: background-color 1s ease-in;
         opacity: 0.1;
+        &.inactive {
+          background-color: #92FF0711;
+        }
         &.active {
           opacity: 1;
         }

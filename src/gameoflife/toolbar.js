@@ -36,7 +36,7 @@ export default function Toolbar(props) {
             <div className="slidecontainer">
                 <input
                     type="range"
-                    min={5}
+                    min={15}
                     max={80}
                     step="5"
                     value={cellDimensions}
